@@ -1,12 +1,18 @@
 package com.jk.mapper;
 
+import java.util.List;
+
 import com.jk.bean.User;
 
 public interface UserMapper {
 
-	public Integer insertUser(User user) throws Exception;
+	public User selectUserById(Integer id);
 
-	public void deletetUserById(Integer id) throws Exception;
+	public int insertUser(User user);
 
-	public User selectUserById(Integer id) throws Exception;
+	public int deletetUserById(Integer id);
+
+	public int updateUser(User user);
+
+	public List<User> selectUsers();
 }
