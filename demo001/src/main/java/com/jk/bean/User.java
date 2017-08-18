@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class User {
 
+	// 属性名和数据库表名一一对应
 	private Integer id;
 	private String username;
 	private String sex;

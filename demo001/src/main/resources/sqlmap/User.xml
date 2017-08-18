@@ -2,11 +2,15 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--命名空间，会通过(命名空间.id)的方法找到该查询-->
+<!--命名空间(namespace)，作用就是对sql进行分类的管理，sql隔离-->
 <mapper namespace="test">
 
-	<!--（1） -->
-	<!-- 查询，通过用户id进行查询 -->
+	<!--select 标识通过查询执行该条语句-->
+	<!--id:标识着该sql语句在该命名空间下的唯一标识-->
+	<!--parameterType:指定输入的参数类型-->
+	<!--#{value}：标识占位符-->
+	<!--#{value}：如果输入参数为简单的数据类型，#{}中的参数可以任意，可以是value或其他类型-->
+	<!--resultType：查询后返回的结果类型-->
 	<select id="findUserById" parameterType="java.lang.Integer"
 		resultType="com.jk.bean.User">
 		<!-- 最后不能有分号 -->
