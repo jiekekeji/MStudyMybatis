@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间(namespace)，作用就是对sql进行分类的管理，sql隔离 -->
+<mapper namespace="com.jk.mapper.UserMapper">
+    <!--
+       id：表示唯一的resultMap，
+       type：表示该resultMap最终映射的java对象类型,可以使用别名 
+       如这里把userResultMap这个resultMap映射成com.jk.bean.User类型
+       -->
+	<resultMap type="com.jk.bean.User" id="userResultMap">
+	    <!-- id：表示查询结果集中唯一标识
+            column:查询出来的列名 
+            property:type指定的pojo类型中的属性名
+             最终resultMap对column和property作一个映射关系 (对应关系)
+         -->
+		<id column="id" property="id" />
+		<!--
+           result:对普通名映射定义
+           column:查询出来的列名 
+           property:type指定的pojo类型中的属性名 
+           最终resultMap对column和property作一个映射关系 (对应关系)
+         -->
+		<result column="username" property="username" />
+	</resultMap>
+
+	<insert id="insertUser" parameterType="com.jk.bean.User">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			select
+			LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO user
+		(username,birthday,sex,address) values
+		(#{username},#{birthday},#{sex},#{address})
+	</insert>
+
+	<delete id="deletetUserById" parameterType="java.lang.Integer">
+		delete from user
+		where id = #{id}
+	</delete>
+
+	<update id="updateUser" parameterType="com.jk.bean.User">
+		<!--通过类的属性名取值，如这里User有id和usernmae等属性 -->
+		update user set username=#{username} where id=#{id}
+	</update>
+
+	<select id="selectUserById" parameterType="java.util.Map"
+		resultType="user">
+		<!--通过map的key取值，如这里去id和username -->
+		select * from user where id=#{id} and username=#{username}
+	</select>
+
+	<select id="selectUsers" resultType="com.jk.bean.User">
+		select * from user
+	</select>
+
+	<select id="findUserCount" resultType="int">
+		select count(*) from user
+	</select>
+
+	<select id="selectUserMapById" parameterType="int" resultMap="userResultMap">
+		select * from user where id=#{id}
+	</select>
+</mapper>
