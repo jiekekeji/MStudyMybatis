@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 			<!-- 配置数据库连接池 -->
 			<dataSource type="POOLED">
 				<property name="driver" value="com.mysql.jdbc.Driver" />
-				<property name="url" value="jdbc:mysql://23.105.108.207:3306/mybatis_test" />
+				<property name="url" value="jdbc:mysql://localhost:3306/mybatis_test" />
 				<property name="username" value="root" />
 				<property name="password" value="123456" />
 			</dataSource>
