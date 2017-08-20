@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间(namespace)，作用就是对sql进行分类的管理，sql隔离 -->
+<mapper namespace="com.jk.mapper.UserMapper">
+
+	<insert id="insertUser" parameterType="com.jk.bean.User">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			select
+			LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO user
+		(username,birthday,sex,address) values
+		(#{username},#{birthday},#{sex},#{address})
+	</insert>
+
+	<delete id="deletetUserById" parameterType="java.lang.Integer">
+		delete from user
+		where id = #{id}
+	</delete>
+
+	<update id="updateUser" parameterType="com.jk.bean.User">
+		update user set address=#{address}
+		<where>
+			<if test="sex!=null">
+				and sex=#{sex}
+			</if>
+			<if test="username!=null">
+				and username=#{username}
+			</if>
+		</where>
+	</update>
+
+	<sql id="update_user">
+		<if test="username!=null">
+			username=#{username},
+		</if>
+		<if test="address!=null">
+			address=#{address},
+		</if>
+	</sql>
+
+	<update id="updateUserById" parameterType="com.jk.bean.User">
+		update user
+		<set>
+			<include refid="update_user"></include>
+		</set>
+		where id=#{id}
+	</update>
+
+	<!--另一种写法 -->
+	<!--<update id="updateUserById" parameterType="com.jk.bean.User"> -->
+	<!--update user -->
+	<!--<trim prefix="SET" suffixOverrides=","> -->
+	<!--<if test="username!=null"> -->
+	<!--username=#{username}, -->
+	<!--</if> -->
+	<!--<if test="address!=null"> -->
+	<!--address=#{address}, -->
+	<!--</if> -->
+	<!--</trim> -->
+	<!--where id=#{id} -->
+	<!--</update> -->
+
+	<select id="selectUserById" parameterType="int" resultType="user">
+		select * from user where id=#{id}
+	</select>
+
+	<select id="selectUsers" resultType="com.jk.bean.User">
+		select * from user where
+	</select>
+
+
+	<select id="selectUserByIds" parameterType="com.jk.bean.Query"
+		resultType="user">
+		select * from user
+		<where>
+			<if test="ids!=null">
+				<!-- 使用foreach遍历ids collection:指定输入对象的集合属性 item:每个遍历生成对象中 open：开始遍历时拼接的串 
+					close:技术遍历时拼接的串 separator:遍历的两个对象中需要拼接的串 -->
+				<foreach collection="ids" item="user_id" open="AND (" close=")"
+					separator="or">
+					id=#{user_id}
+				</foreach>
+			</if>
+		</where>
+	</select>
+</mapper>
