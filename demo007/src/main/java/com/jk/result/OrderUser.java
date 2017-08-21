@@ -4,12 +4,16 @@ import com.jk.bean.Orders;
 
 public class OrderUser extends Orders {
 
-	// 属性名和数据库表名一一对应
-	// private Integer id;
+	// // 属性名和数据库表名一一对应
+	// // private Integer id;
 	private String username;
 	private String sex;
 	private String birthday;
 	private String address;
+
+	public OrderUser() {
+		super();
+	}
 
 	public String getUsername() {
 		return username;
@@ -45,6 +49,7 @@ public class OrderUser extends Orders {
 
 	@Override
 	public String toString() {
+		System.out.println(super.toString());
 		return "OrderUser [username=" + username + ", sex=" + sex + ", birthday=" + birthday + ", address=" + address
 				+ "]";
 	}
