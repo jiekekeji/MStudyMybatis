@@ -5,7 +5,7 @@ mybatis-高级映射之一对一（resultType方式和resultMap方式）
 ===
 ![image](https://github.com/jiekekeji/MStudyMybatis/blob/master/demo007/preview/demo007-1.png)
 
-二、查询订单信息，关联查询用户信息.一对一（resultType方式）
+二、查询订单信息，关联查询用户信息.一个订单只能由一个用户创建，一对一（resultType方式）
 ===
 1、sql查询语句：
 ```
@@ -90,7 +90,7 @@ public void testSelectOrderAndUser1() {
 }
 ```
 
-三、查询订单信息，关联查询用户信息.一对一（resultMap方式）
+三、查询订单信息，关联查询用户信息.一个订单只能由一个用户创建，一对一（resultMap方式）
 ===
 1、sql查询语句：
 ```
