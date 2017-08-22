@@ -8,6 +8,5 @@ import com.jk.result.UserItems;
 
 public interface UserMapper {
 
-
 	public List<UserItems> selectOrderAndUser2();
 }
