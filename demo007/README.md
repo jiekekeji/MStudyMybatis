@@ -115,7 +115,7 @@ public class Orders {
 ```
 3、编写mapper.xml文件，定义resultMap：
 ```
-<!-- 定义查询订单关联用户的 resultMap,将整个的查询结果映射到com.mybatis.entity.Orders中 -->
+<!-- 定义查询订单关联用户的 resultMap,将整个的查询结果映射到com.jk.result.Orders中 -->
 <resultMap type="com.jk.result.Orders" id="OrdersUserResultMap">
     <!-- 配置映射的订单信息 -->
     <!-- 
