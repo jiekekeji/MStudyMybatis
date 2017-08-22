@@ -49,7 +49,7 @@ public class UserItems {
     <result column="address" property="address" />
 
     <!-- 
-             一个用户可能会购买多个商品：要使用collection映射
+         一个用户可能会购买多个商品：要使用collection映射
         collection:对关联查询到的多条记录映射到集合中
         property:将关联查询到的多条记录映射到orders类的那个属性
         ofType:指定映射的集合属性中pojo的类型
