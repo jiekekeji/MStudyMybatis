@@ -49,7 +49,6 @@ public class OrderUser extends Orders {
 
 	@Override
 	public String toString() {
-		System.out.println(super.toString());
 		return "OrderUser [username=" + username + ", sex=" + sex + ", birthday=" + birthday + ", address=" + address
 				+ "]";
 	}

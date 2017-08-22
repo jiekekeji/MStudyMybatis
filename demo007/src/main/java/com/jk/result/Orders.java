@@ -9,6 +9,7 @@ public class Orders {
 	private String number;
 	private String createtime;
 	private String note;
+	//在这持有User
 	private User user;
 
 	public Integer getId() {
