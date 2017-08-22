@@ -159,3 +159,27 @@ public class Orders {
     SELECT t1.*,t2.username,t2.sex,t2.address FROM orders t1,t_user t2 WHERE t1.user_id=t2.id
 </select>
 ```
+5、编写mapper接口：
+```
+public interface UserMapper {
+
+	public List<Orders> selectOrderAndUser2();
+}
+```
+6、测试代码：
+```
+public void testSelectOrderAndUser2() {
+    //// 获取SqlSession，通过SqlSession获取对应的接口
+    UserMapper userMapper = SqlSessionUtils.getSqlSession().getMapper(UserMapper.class);
+    List<Orders> orderUser = userMapper.selectOrderAndUser2();
+    for (Orders orderUser2 : orderUser) {
+        System.out.println("=======start===========");
+        System.out.println("id=" + orderUser2.getId());
+        System.out.println("User_id=" + orderUser2.getUser_id());
+        System.out.println("Number=" + orderUser2.getNumber());
+        System.out.println("Username=" + orderUser2.getUser().toString());
+        System.out.println("=======end===========");
+    }
+    SqlSessionUtils.getSqlSession().close();
+}
+```
