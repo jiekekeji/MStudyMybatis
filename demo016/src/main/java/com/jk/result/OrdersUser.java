@@ -5,7 +5,7 @@ import java.util.Date;
 import com.jk.pojo.Orders;
 import com.jk.pojo.TUser;
 
-public class OrdersUser extends TUser {
+public class OrdersUser {
 	private Integer id;
 
 	private Integer userId;
@@ -15,6 +15,8 @@ public class OrdersUser extends TUser {
 	private Date createtime;
 
 	private String note;
+
+	private TUser user;
 
 	public Integer getId() {
 		return id;
@@ -56,50 +58,18 @@ public class OrdersUser extends TUser {
 		this.note = note == null ? null : note.trim();
 	}
 
+	public TUser getUser() {
+		return user;
+	}
+
+	public void setUser(TUser user) {
+		this.user = user;
+	}
+
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getClass().getSimpleName());
-		sb.append(" [");
-		sb.append("Hash = ").append(hashCode());
-		sb.append(", id=").append(id);
-		sb.append(", userId=").append(userId);
-		sb.append(", number=").append(number);
-		sb.append(", createtime=").append(createtime);
-		sb.append(", note=").append(note);
-		sb.append("]");
-		return sb.toString();
+		return "OrdersUser [id=" + id + ", userId=" + userId + ", number=" + number + ", createtime=" + createtime
+				+ ", note=" + note + ", user=" + user + "]";
 	}
 
-	@Override
-	public boolean equals(Object that) {
-		if (this == that) {
-			return true;
-		}
-		if (that == null) {
-			return false;
-		}
-		if (getClass() != that.getClass()) {
-			return false;
-		}
-		Orders other = (Orders) that;
-		return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-				&& (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-				&& (this.getNumber() == null ? other.getNumber() == null : this.getNumber().equals(other.getNumber()))
-				&& (this.getCreatetime() == null ? other.getCreatetime() == null
-						: this.getCreatetime().equals(other.getCreatetime()))
-				&& (this.getNote() == null ? other.getNote() == null : this.getNote().equals(other.getNote()));
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
-		result = prime * result + ((getNumber() == null) ? 0 : getNumber().hashCode());
-		result = prime * result + ((getCreatetime() == null) ? 0 : getCreatetime().hashCode());
-		result = prime * result + ((getNote() == null) ? 0 : getNote().hashCode());
-		return result;
-	}
 }

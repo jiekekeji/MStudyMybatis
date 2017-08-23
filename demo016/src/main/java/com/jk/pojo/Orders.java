@@ -5,7 +5,7 @@ import java.util.Date;
 public class Orders {
     private Integer id;
 
-    private Integer user_id;
+    private Integer userId;
 
     private String number;
 
@@ -22,11 +22,11 @@ public class Orders {
     }
 
     public Integer getUserId() {
-        return user_id;
+        return userId;
     }
 
     public void setUserId(Integer userId) {
-        this.user_id = userId;
+        this.userId = userId;
     }
 
     public String getNumber() {
@@ -60,7 +60,7 @@ public class Orders {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", userId=").append(user_id);
+        sb.append(", userId=").append(userId);
         sb.append(", number=").append(number);
         sb.append(", createtime=").append(createtime);
         sb.append(", note=").append(note);
