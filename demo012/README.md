@@ -194,4 +194,5 @@ public void testGenerator()
 }
 ```
 5、执行完成后刷新工程：
+
 ![image](https://github.com/jiekekeji/MStudyMybatis/blob/master/demo012/preview/demo012-1.png)
