@@ -1,6 +1,8 @@
 package com.jk.bean;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
 	// 属性和数据库列名一一对应
 	private Integer id;

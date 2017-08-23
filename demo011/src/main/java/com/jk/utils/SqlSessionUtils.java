@@ -11,15 +11,21 @@ public class SqlSessionUtils {
 	public static final String resource = "SqlMapperConfig.xml";
 	public static SqlSession sqlSession;
 
-	public static SqlSession getSqlSession() {
+	// 得到配置文件流
+	private static ClassLoader classLoader;
+	private static InputStream is;
+
+	private static SqlSessionFactory sqlSessionFactory;
+
+	static {
 		// 得到配置文件流
-		ClassLoader classLoader = SqlSessionUtils.class.getClassLoader();
-		InputStream is = classLoader.getResourceAsStream(resource);
-
+		classLoader = SqlSessionUtils.class.getClassLoader();
+		is = classLoader.getResourceAsStream(resource);
 		// 创建会话工厂，向build方法中传入配置信息
-		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
+		sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
+	}
 
-		// 通过工厂得到SqlSession
+	public static SqlSession getSqlSession() {
 		sqlSession = sqlSessionFactory.openSession(true);
 		return sqlSession;
 	}

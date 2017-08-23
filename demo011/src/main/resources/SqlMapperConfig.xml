@@ -8,11 +8,11 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
 	<!-- 全局参数的配置 -->
 	<settings>
-		<!--打开延迟加载的开关 -->
-		<setting name="lazyLoadingEnabled" value="true" />
-		<!--将积极加载改为消极加载及按需加载 -->
-		<setting name="aggressiveLazyLoading" value="false" />
+		<!-- 开启二级缓存 -->
+		<setting name="cacheEnabled" value="true" />
 	</settings>
+	
+	
 
 	<!-- 别名定义 -->
 	<typeAliases>
