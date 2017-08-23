@@ -17,7 +17,7 @@ import com.jk.provider.TUserProvider;
 
 public interface TUserMapper {
 
-	// **************动态SQL*********************************
+	// **************引用动态SQL*********************************
 
 	@InsertProvider(type = TUserProvider.class, method = "insertTUser")
 	@Options(useGeneratedKeys = true, keyProperty = "id")

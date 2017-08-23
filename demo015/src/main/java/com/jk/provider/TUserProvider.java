@@ -69,7 +69,8 @@ public class TUserProvider {
 			}
 		}.toString();
 	}
-	
+
+	// 查询语句 动态 sql,t_user:表名
 	public String selectTUserById3() {
 		return new SQL() {
 			{
