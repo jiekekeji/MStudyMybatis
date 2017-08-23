@@ -70,19 +70,19 @@ public interface TUserMapper {
 
 	// **************基础*********************************
 
-    //增
+     //增
 	@Insert("INSERT INTO t_user (username,birthday,sex,address) VALUES (#{username},#{birthday},#{sex},#{address})")
 	public void insertTUser(TUser user);
 
-    //查
+     //查
 	@Select("SELECT * from t_user WHERE id=#{id}")
 	public TUser selectTUserById(Integer id);
 
-    //更
+     //更
 	@Update("UPDATE t_user u SET u.username=#{username},u.birthday=#{birthday},u.sex=#{sex},u.address=#{address} WHERE u.id=#{id}")
 	public void updatetTUserById(TUser user);
 
-    //删
+     //删
 	@Delete("DELETE FROM t_user WHERE id=#{id}")
 	public void deleteTUserById(Integer id);
 
