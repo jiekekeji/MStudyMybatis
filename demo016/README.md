@@ -1,201 +1,220 @@
-mybatis-基于注解的一对一查询
+mybatis-基于注解高级查询(一对一)
 ---
+表结构：
+===
+![image](https://github.com/jiekekeji/MStudyMybatis/blob/master/demo016/preview/demo007-1.png)
 
-1、第一步：新建类TUserProvider，在里面编写动态的sql语句：
+一、一对一查询，查询订单信息关联查询用户信息：
+===
+1、sql查询语句：
 ```
-package com.jk.provider;
+SELECT t1.*,t2.* FROM orders t1,t_user t2 WHERE t1.user_id=t2.id;
+```
+![image](https://github.com/jiekekeji/MStudyMybatis/blob/master/demo007/preview/demo007-2.png)
 
-import org.apache.ibatis.jdbc.SQL;
+2、根据查询结果，定义OrdersUser类用于接收查询的结果，OrdersUser除了有Orders的属性外，还持有TUser：
+```
+public class OrdersUser {
+	private Integer id;
 
-import com.jk.pojo.TUser;
+	private Integer userId;
 
-public class TUserProvider {
+	private String number;
 
-	// 插入语句 动态 sql,t_user:表名
-	public String insertTUser(final TUser user) {
-		return new SQL() {
-			{
-				INSERT_INTO("t_user");
-				if (user.getUsername() != null) {
-					VALUES("username", "#{username}");
-				}
-				if (user.getBirthday() != null) {
-					VALUES("birthday", "#{birthday}");
-				}
-				if (user.getSex() != null) {
-					VALUES("sex", "#{sex}");
-				}
-				if (user.getAddress() != null) {
-					VALUES("address", "#{address}");
-				}
-			}
-		}.toString();
+	private Date createtime;
+
+	private String note;
+
+	private TUser user;
+
+	public Integer getId() {
+		return id;
 	}
 
-	// 更新语句 动态 sql,t_user:表名
-	public String updateTUser(final TUser user) {
-		return new SQL() {
-			{
-				UPDATE("t_user");
-				if (user.getUsername() != null) {
-					SET("username = #{username}");
-				}
-				if (user.getBirthday() != null) {
-					SET("birthday = #{birthday}");
-				}
-				if (user.getSex() != null) {
-					SET("sex = #{sex}");
-				}
-				if (user.getAddress() != null) {
-					SET("address = #{address}");
-				}
-				WHERE("id = #{id}");
-			}
-		}.toString();
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	// 删除语句 动态 sql,t_user:表名
-	public String deleteTUser(int id) {
-		return new SQL() {
-			{
-				DELETE_FROM("t_user");
-				WHERE("id = #{id}");
-			}
-		}.toString();
-	}
-	
-	// 查询语句 动态 sql,t_user:表名
-	public String selectTUserById(int id) {
-		return new SQL() {
-			{
-				SELECT("*");
-				FROM("t_user");
-				WHERE("id = #{id}");
-			}
-		}.toString();
+	public Integer getUserId() {
+		return userId;
 	}
 
-	// 查询语句 动态 sql,t_user:表名
-	public String selectTUserById3() {
-		return new SQL() {
-			{
-				SELECT("*");
-				FROM("t_user");
-				ORDER_BY("id DESC");
-			}
-		}.toString();
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number == null ? null : number.trim();
+	}
+
+	public Date getCreatetime() {
+		return createtime;
+	}
+
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note == null ? null : note.trim();
+	}
+
+	public TUser getUser() {
+		return user;
+	}
+
+	public void setUser(TUser user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "OrdersUser [id=" + id + ", userId=" + userId + ", number=" + number + ", createtime=" + createtime
+				+ ", note=" + note + ", user=" + user + "]";
+	}
+
 }
 ```
+TUser.java:
+```
+public class TUser {
+	private Integer id;
 
-2、第二步：编写mapper接口，新建TUserMapper接口，通过 @InsertProvider、@UpdateProvider、
-@DeleteProvider、@SelectProvider注解引用 第一步 定义的sql语句：
+	private String username;
+
+	private String birthday;
+
+	private String sex;
+
+	private String address;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username == null ? null : username.trim();
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex == null ? null : sex.trim();
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address == null ? null : address.trim();
+	}
+```
+3、定义mapper接口：
 ```
 public interface TUserMapper {
+    
+	/**
+	 * 根据用户ID查询用户信息
+	 * @param id
+	 * @return
+	 */
+	@Select("SELECT * from t_user WHERE id=#{id}")
+	public TUser selectTUserById(Integer id);
 
-	// **************引用动态SQL*********************************
-
-	@InsertProvider(type = TUserProvider.class, method = "insertTUser")
-	@Options(useGeneratedKeys = true, keyProperty = "id")
-	int insertTUser2(TUser user);
-
-	@UpdateProvider(type = TUserProvider.class, method = "updateTUser")
-	int updateTUser2(TUser user);
-
-	@DeleteProvider(type = TUserProvider.class, method = "deleteTUser")
-	int deleteTUser2(int id);
-
-	@SelectProvider(type = TUserProvider.class, method = "selectTUserById")
-	TUser selectTUserById2(int id);
-
-	@SelectProvider(type = TUserProvider.class, method = "selectTUserById3")
-	List<TUser> selectTUserById3();
-
+	/**
+	 * 查询订单信息，
+	 * 返回值OrdersUser的属性user的值是通过selectTUserById查询的，注意看
+	 * @return
+	 */
+	@Select("SELECT * from orders")
+	@Results({
+		@Result(id=true,column="id",property="id"), 
+		@Result(column="user_id",property="userId"),  
+        @Result(column="number",property="number"),  
+        @Result(column="createtime",property="createtime"), 
+        @Result(column="note",property="note"), 
+        @Result(column="user_id",property="user",one=@One(  
+                select="com.jk.mapper.TUserMapper.selectTUserById")) 
+	})
+	List<OrdersUser> selectItemsTUser();
 }
-
 ```
-
-3、编写测试代码：
+4、测试代码：
 ```
-package com.jk;
+public void testSelectItemsTUser() {
+    //// 获取SqlSession，通过SqlSession获取对应的接口
+    SqlSession sqlSession = SqlSessionUtils.getSqlSession();
 
-import java.util.List;
+    TUserMapper userMapper = sqlSession.getMapper(TUserMapper.class);
 
-import org.apache.ibatis.session.SqlSession;
+    List<OrdersUser> tUsers = userMapper.selectItemsTUser();
+    for (OrdersUser itemsUser : tUsers) {
+        System.out.println("itemsUser=" + itemsUser);
+    }
 
-import com.jk.mapper.TUserMapper;
-import com.jk.pojo.TUser;
-import com.jk.utils.SqlSessionUtils;
-
-import junit.framework.TestCase;
-
-public class AppTest extends TestCase {
-
-	
-	public void testTnsertTUser2() {
-		SqlSession sqlSession = SqlSessionUtils.getSqlSession();
-		TUserMapper userMapper = sqlSession.getMapper(TUserMapper.class);
-
-		TUser user = new TUser();
-		user.setUsername("古树慕容");
-		user.setAddress("侨中路");
-
-		userMapper.insertTUser2(user);
-		sqlSession.commit();
-
-		sqlSession.close();
-	}
-
-	public void testUpdatetTUserById2() {
-		SqlSession sqlSession = SqlSessionUtils.getSqlSession();
-		TUserMapper userMapper = sqlSession.getMapper(TUserMapper.class);
-
-		TUser user = new TUser();
-		user.setId(4);
-		// user.setUsername("上官飞燕");
-		// user.setBirthday(new Date());
-		user.setSex("1");
-		user.setAddress("神剑山庄");
-
-		userMapper.updateTUser2(user);
-		sqlSession.commit();
-
-		sqlSession.close();
-	}
-
-	public void testDeleteTUserById2() {
-		SqlSession sqlSession = SqlSessionUtils.getSqlSession();
-		TUserMapper userMapper = sqlSession.getMapper(TUserMapper.class);
-
-		userMapper.deleteTUser2(13);
-		sqlSession.commit();
-
-		sqlSession.close();
-	}
-
-	public void testSelectTUserById2() {
-		//// 获取SqlSession，通过SqlSession获取对应的接口
-		SqlSession sqlSession = SqlSessionUtils.getSqlSession();
-
-		TUserMapper userMapper = sqlSession.getMapper(TUserMapper.class);
-
-		TUser tUser = userMapper.selectTUserById2(1);
-		System.out.println("tUser=" + tUser);
-
-		sqlSession.close();
-	}
-
-	public void testSelectTUserById3() {
-		//// 获取SqlSession，通过SqlSession获取对应的接口
-		SqlSession sqlSession = SqlSessionUtils.getSqlSession();
-
-		TUserMapper userMapper = sqlSession.getMapper(TUserMapper.class);
-
-		List<TUser> tUsers = userMapper.selectTUserById3();
-		System.out.println("tUsers=" + tUsers);
-
-		sqlSession.close();
-	}
+    sqlSession.close();
 }
-
+```
+5、打印结果:
+```
+2017-08-24 08:07:17  [ main:141 ] - [ DEBUG ]  Openning JDBC Connection
+2017-08-24 08:07:19  [ main:1942 ] - [ DEBUG ]  Created connection 407046192.
+2017-08-24 08:07:19  [ main:2117 ] - [ DEBUG ]  Setting autocommit to true on JDBC Connection [com.mysql.jdbc.JDBC4Connection@18430830]
+2017-08-24 08:07:19  [ main:2297 ] - [ DEBUG ]  ooo Using Connection [com.mysql.jdbc.JDBC4Connection@18430830]
+2017-08-24 08:07:19  [ main:2299 ] - [ DEBUG ]  ==>  Preparing: SELECT * from orders 
+2017-08-24 08:07:19  [ main:2337 ] - [ DEBUG ]  ==> Parameters: 
+2017-08-24 08:07:20  [ main:2540 ] - [ DEBUG ]  ooo Using Connection [com.mysql.jdbc.JDBC4Connection@18430830]
+2017-08-24 08:07:20  [ main:2540 ] - [ DEBUG ]  ==>  Preparing: SELECT * from t_user WHERE id=? 
+2017-08-24 08:07:20  [ main:2540 ] - [ DEBUG ]  ==> Parameters: 1(Integer)
+2017-08-24 08:07:20  [ main:2721 ] - [ DEBUG ]  ooo Using Connection [com.mysql.jdbc.JDBC4Connection@18430830]
+2017-08-24 08:07:20  [ main:2721 ] - [ DEBUG ]  ==>  Preparing: SELECT * from t_user WHERE id=? 
+2017-08-24 08:07:20  [ main:2721 ] - [ DEBUG ]  ==> Parameters: 2(Integer)
+2017-08-24 08:07:20  [ main:2900 ] - [ DEBUG ]  ooo Using Connection [com.mysql.jdbc.JDBC4Connection@18430830]
+2017-08-24 08:07:20  [ main:2900 ] - [ DEBUG ]  ==>  Preparing: SELECT * from t_user WHERE id=? 
+2017-08-24 08:07:20  [ main:2901 ] - [ DEBUG ]  ==> Parameters: 3(Integer)
+2017-08-24 08:07:20  [ main:3082 ] - [ DEBUG ]  ooo Using Connection [com.mysql.jdbc.JDBC4Connection@18430830]
+2017-08-24 08:07:20  [ main:3083 ] - [ DEBUG ]  ==>  Preparing: SELECT * from t_user WHERE id=? 
+2017-08-24 08:07:20  [ main:3083 ] - [ DEBUG ]  ==> Parameters: 4(Integer)
+2017-08-24 08:07:20  [ main:3265 ] - [ DEBUG ]  ooo Using Connection [com.mysql.jdbc.JDBC4Connection@18430830]
+2017-08-24 08:07:20  [ main:3265 ] - [ DEBUG ]  ==>  Preparing: SELECT * from t_user WHERE id=? 
+2017-08-24 08:07:20  [ main:3265 ] - [ DEBUG ]  ==> Parameters: 5(Integer)
+2017-08-24 08:07:21  [ main:3445 ] - [ DEBUG ]  ooo Using Connection [com.mysql.jdbc.JDBC4Connection@18430830]
+2017-08-24 08:07:21  [ main:3445 ] - [ DEBUG ]  ==>  Preparing: SELECT * from t_user WHERE id=? 
+2017-08-24 08:07:21  [ main:3445 ] - [ DEBUG ]  ==> Parameters: 6(Integer)
+itemsUser=OrdersUser [id=1, userId=1, number=1000010, createtime=Thu Jun 04 13:22:35 CST 2015, note=null, user=TUser [Hash = 558362958, id=1, username=张明明, birthday=, sex=2, address=null]]
+itemsUser=OrdersUser [id=2, userId=1, number=1000011, createtime=Wed Jul 08 13:22:41 CST 2015, note=null, user=TUser [Hash = 558362958, id=1, username=张明明, birthday=, sex=2, address=null]]
+itemsUser=OrdersUser [id=3, userId=2, number=1000012, createtime=Fri Jul 17 14:13:23 CST 2015, note=null, user=TUser [Hash = 1661449268, id=2, username=张三, birthday=, sex=1, address=北京市]]
+itemsUser=OrdersUser [id=4, userId=3, number=1000012, createtime=Thu Jul 16 18:13:23 CST 2015, note=null, user=TUser [Hash = -952409885, id=3, username=张小明, birthday=null, sex=1, address=河南郑州]]
+itemsUser=OrdersUser [id=5, userId=4, number=1000012, createtime=Wed Jul 15 19:13:23 CST 2015, note=null, user=TUser [Hash = -338855119, id=4, username=陈小明, birthday=null, sex=1, address=神剑山庄]]
+itemsUser=OrdersUser [id=6, userId=5, number=1000012, createtime=Tue Jul 14 17:13:23 CST 2015, note=null, user=TUser [Hash = -153058947, id=5, username=张三丰, birthday=null, sex=1, address=河南郑州]]
+itemsUser=OrdersUser [id=7, userId=6, number=1000012, createtime=Mon Jul 13 16:13:23 CST 2015, note=null, user=TUser [Hash = -432953026, id=6, username=陈小明, birthday=null, sex=1, address=河南郑州]]
+2017-08-24 08:07:21  [ main:3630 ] - [ DEBUG ]  Closing JDBC Connection [com.mysql.jdbc.JDBC4Connection@18430830]
+2017-08-24 08:07:21  [ main:3631 ] - [ DEBUG ]  Returned connection 407046192 to pool.
 ```

@@ -1,6 +1,5 @@
 package com.jk;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -21,7 +20,7 @@ public class AppTest extends TestCase {
 
 		List<OrdersUser> tUsers = userMapper.selectItemsTUser();
 		for (OrdersUser itemsUser : tUsers) {
-			System.out.println("itemsUser="+itemsUser);
+			System.out.println("itemsUser=" + itemsUser);
 		}
 
 		sqlSession.close();

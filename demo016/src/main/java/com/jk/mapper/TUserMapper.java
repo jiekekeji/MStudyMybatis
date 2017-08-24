@@ -11,7 +11,12 @@ import com.jk.pojo.TUser;
 import com.jk.result.OrdersUser;
 
 public interface TUserMapper {
-
+    
+	/**
+	 * 根据用户ID查询用户信息
+	 * @param id
+	 * @return
+	 */
 	@Select("SELECT * from t_user WHERE id=#{id}")
 	public TUser selectTUserById(Integer id);
 
@@ -23,7 +28,7 @@ public interface TUserMapper {
         @Result(column="createtime",property="createtime"), 
         @Result(column="note",property="note"), 
         @Result(column="user_id",property="user",one=@One(  
-                select="com.jk.mapper.selectTUserById")) 
+                select="com.jk.mapper.TUserMapper.selectTUserById")) 
 	})
 	List<OrdersUser> selectItemsTUser();
 

@@ -2,7 +2,6 @@ package com.jk.result;
 
 import java.util.Date;
 
-import com.jk.pojo.Orders;
 import com.jk.pojo.TUser;
 
 public class OrdersUser {
