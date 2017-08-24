@@ -20,6 +20,11 @@ public interface TUserMapper {
 	@Select("SELECT * from t_user WHERE id=#{id}")
 	public TUser selectTUserById(Integer id);
 
+	/**
+	 * 查询订单信息，
+	 * 返回值OrdersUser的属性user的值是通过selectTUserById查询的，注意看
+	 * @return
+	 */
 	@Select("SELECT * from orders")
 	@Results({
 		@Result(id=true,column="id",property="id"), 
