@@ -136,7 +136,7 @@ public class TUser {
 		this.address = address == null ? null : address.trim();
 	}
 ```
-3、定义mapper接口：
+3、定义mapper接口,使用@One一对一关联：
 ```
 public interface TUserMapper {
     
